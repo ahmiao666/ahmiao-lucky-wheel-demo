@@ -7,12 +7,12 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      // '@ahmiao666/red-packet-rain-react': resolve(__dirname, '../../src/react.ts'),
+      // '@ahmiao666/lucky-wheel-react': resolve(__dirname, '../../src/react.ts'),
     },
     dedupe: ["react", "react-dom"],
   },
   optimizeDeps: {
-    // exclude: ['@ahmiao666/red-packet-rain-react'],
+    // exclude: ['@ahmiao666/lucky-wheel-react'],
     include: ['react', 'react-dom'],
   },
   define: {

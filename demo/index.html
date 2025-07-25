@@ -91,17 +91,10 @@
 
     <!-- 箭头配置控件 -->
     <div class="arrow-controls">
-      <label
-        >箭头距离:
-        <input type="range" id="distance" min="0" max="1000" value="180"
-      /></label>
-      <label
-        >箭头大小: <input type="range" id="size" min="10" max="30" value="15"
-      /></label>
+      <label>箭头距离: <input type="range" id="distance" min="0" max="1000" value="180" /></label>
+      <label>箭头大小: <input type="range" id="size" min="10" max="30" value="15" /></label>
       <label>箭头颜色: <input type="color" id="color" value="#333333" /></label>
-      <label
-        >方向: <input type="range" id="direction" min="0" max="359" value="0"
-      /></label>
+      <label>方向: <input type="range" id="direction" min="0" max="359" value="0" /></label>
     </div>
 
     <!-- 边框配置控件 -->
@@ -110,9 +103,7 @@
         边框宽度:
         <input type="range" id="borderWidth" min="0" max="20" value="5" />
       </label>
-      <label>
-        边框颜色: <input type="color" id="borderColor" value="#ff0000" />
-      </label>
+      <label> 边框颜色: <input type="color" id="borderColor" value="#ff0000" /> </label>
       <label>
         边框样式:
         <select id="borderStyle">
@@ -147,35 +138,12 @@
 
     <!-- 图片配置控件 -->
     <div class="border-controls">
-      <label
-        >背景图片URL:
-        <input
-          type="text"
-          id="bgImageUrl"
-          placeholder="输入图片URL"
-          style="width: 300px"
-      /></label>
+      <label>背景图片URL: <input type="text" id="bgImageUrl" placeholder="输入图片URL" style="width: 300px" /></label>
       <button onclick="setBackgroundImage()">设置背景</button>
       <button onclick="clearBackgroundImage()">清除背景</button>
       <br /><br />
-      <label
-        >扇形图片URL:
-        <input
-          type="text"
-          id="sectorImageUrl"
-          placeholder="输入图片URL"
-          style="width: 200px"
-          value=""
-      /></label>
-      <label
-        >扇形ID:
-        <input
-          type="text"
-          id="sectorImageId"
-          placeholder="如：1"
-          style="width: 50px"
-          value="1"
-      /></label>
+      <label>扇形图片URL: <input type="text" id="sectorImageUrl" placeholder="输入图片URL" style="width: 200px" value="" /></label>
+      <label>扇形ID: <input type="text" id="sectorImageId" placeholder="如：1" style="width: 50px" value="1" /></label>
       <button onclick="setSectorImage()">设置扇形图片</button>
       <button onclick="clearSectorImage()">清除扇形图片</button>
     </div>
@@ -196,45 +164,19 @@
         </div>
         <div>
           动画速度:
-          <input
-            type="range"
-            id="centerButtonAnimationSpeed"
-            min="0.0001"
-            max="0.01"
-            step="0.0001"
-            value="0.001"
-          />
+          <input type="range" id="centerButtonAnimationSpeed" min="0.0001" max="0.01" step="0.0001" value="0.001" />
         </div>
         <div>
           动画幅度:
-          <input
-            type="range"
-            id="centerButtonAnimationScale"
-            min="0.01"
-            max="0.3"
-            step="0.01"
-            value="0.1"
-          />
+          <input type="range" id="centerButtonAnimationScale" min="0.01" max="0.3" step="0.01" value="0.1" />
         </div>
         <div>
           按钮宽度:
-          <input
-            type="range"
-            id="centerButtonWidth"
-            min="0"
-            max="100"
-            value="20"
-          />
+          <input type="range" id="centerButtonWidth" min="0" max="100" value="20" />
         </div>
         <div>
           按钮高度:
-          <input
-            type="range"
-            id="centerButtonHeight"
-            min="0"
-            max="100"
-            value="20"
-          />
+          <input type="range" id="centerButtonHeight" min="0" max="100" value="20" />
         </div>
         <div>
           按钮背景色:
@@ -246,12 +188,7 @@
       <div style="width: 100%; margin-bottom: 10px">
         <label>
           按钮背景图片URL:
-          <input
-            type="text"
-            id="centerButtonBgImageUrl"
-            placeholder="输入图片URL"
-            style="width: 300px"
-          />
+          <input type="text" id="centerButtonBgImageUrl" placeholder="输入图片URL" style="width: 300px" />
         </label>
         <button onclick="setCenterButtonBgImage()">设置背景图</button>
         <button onclick="clearCenterButtonBgImage()">清除背景图</button>
@@ -261,13 +198,7 @@
       <div style="width: 100%; margin-bottom: 10px">
         <label>
           按钮边框宽度:
-          <input
-            type="range"
-            id="centerButtonBorderWidth"
-            min="0"
-            max="10"
-            value="3"
-          />
+          <input type="range" id="centerButtonBorderWidth" min="0" max="10" value="3" />
         </label>
         <label>
           按钮边框颜色:
@@ -287,13 +218,7 @@
       <div style="width: 100%; margin-bottom: 10px">
         <label>
           按钮箭头大小:
-          <input
-            type="range"
-            id="centerButtonArrowSize"
-            min="5"
-            max="20"
-            value="12"
-          />
+          <input type="range" id="centerButtonArrowSize" min="5" max="20" value="12" />
         </label>
         <label>
           按钮箭头颜色:
@@ -301,13 +226,7 @@
         </label>
         <label>
           箭头垂直偏移:
-          <input
-            type="range"
-            id="centerButtonArrowOffsetY"
-            min="-20"
-            max="20"
-            value="0"
-          />
+          <input type="range" id="centerButtonArrowOffsetY" min="-20" max="20" value="0" />
           <span id="offsetYValue">0</span>
         </label>
       </div>
@@ -316,12 +235,7 @@
       <div style="width: 100%; margin-bottom: 10px">
         <label>
           按钮箭头图片URL:
-          <input
-            type="text"
-            id="centerButtonArrowImageUrl"
-            placeholder="输入图片URL"
-            style="width: 300px"
-          />
+          <input type="text" id="centerButtonArrowImageUrl" placeholder="输入图片URL" style="width: 300px" />
         </label>
         <button onclick="setCenterButtonArrowImage()">设置箭头图</button>
         <button onclick="clearCenterButtonArrowImage()">清除箭头图</button>
@@ -407,14 +321,14 @@
         stopOffsetRange: 1,
         innerPadding: 20, // 轮盘内边距
         canvasPadding: 30, // 画布内边距
-        backgroundImage:
-          "https://images.pexels.com/photos/2174974/pexels-photo-2174974.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        backgroundImage: "https://images.pexels.com/photos/2174974/pexels-photo-2174974.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
         arrow: {
           size: 15,
           color: "#333333",
           image: "https://img95.699pic.com/element/40180/9917.png_300.png",
           imageWidth: 30, // 箭头图片宽度
           imageHeight: 30, // 箭头图片高度
+          visible: true,
         },
         border: {
           width: 5,
@@ -433,8 +347,7 @@
           width: 80,
           height: 80,
           backgroundColor: "#ffffff",
-          backgroundImage:
-            "https://img.freepik.com/free-photo/3d-view-adorable-pet-cat_23-2150499168.jpg?semt=ais_hybrid&w=740",
+          backgroundImage: "https://img.freepik.com/free-photo/3d-view-adorable-pet-cat_23-2150499168.jpg?semt=ais_hybrid&w=740",
           border: {
             width: 3,
             color: "#333333",
@@ -445,8 +358,7 @@
             size: 20,
             color: "#333333",
             offsetY: -30,
-            image:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg7YPW9MYXhIaiEYqmUOJNP85XFdAr9y6ccexXNFPRP2X1yMLd2fjWXUTR-uzgBbjN_Hs&usqp=CAU",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg7YPW9MYXhIaiEYqmUOJNP85XFdAr9y6ccexXNFPRP2X1yMLd2fjWXUTR-uzgBbjN_Hs&usqp=CAU",
             imageWidth: 30,
             imageHeight: 30,
           },
@@ -464,6 +376,7 @@
         // 设置中心按钮点击回调
         wheel.setCenterButtonClickCallback(() => {
           console.log("开始旋转");
+          wheel.start();
 
           setTimeout(() => {
             // 1秒后自动停止转盘
@@ -471,9 +384,7 @@
               wheel.stop("aaa", (result) => {
                 alert(` 恭喜您抽中: ${result.text}!`);
                 // 停止完成回调，显示结果
-                document.getElementById(
-                  "result"
-                ).textContent = `🎉 恭喜您抽中: ${result.text}!`;
+                document.getElementById("result").textContent = `🎉 恭喜您抽中: ${result.text}!`;
               });
             }
           }, 3000); // 3秒后停止
@@ -528,8 +439,7 @@
         const innerPaddingSlider = document.getElementById("innerPadding");
         const innerPaddingValue = document.getElementById("innerPaddingValue");
         const canvasPaddingSlider = document.getElementById("canvasPadding");
-        const canvasPaddingValue =
-          document.getElementById("canvasPaddingValue");
+        const canvasPaddingValue = document.getElementById("canvasPaddingValue");
 
         borderWidthSlider.addEventListener("input", (e) => {
           wheel.setBorderWidth(parseInt(e.target.value));
@@ -560,10 +470,8 @@
 
       // 设置扇形描边控制器
       function setupSectorStrokeControls() {
-        const sectorStrokeWidthSlider =
-          document.getElementById("sectorStrokeWidth");
-        const sectorStrokeColorPicker =
-          document.getElementById("sectorStrokeColor");
+        const sectorStrokeWidthSlider = document.getElementById("sectorStrokeWidth");
+        const sectorStrokeColorPicker = document.getElementById("sectorStrokeColor");
 
         sectorStrokeWidthSlider.addEventListener("input", (e) => {
           wheel.setSectorStrokeWidth(parseInt(e.target.value));
@@ -587,15 +495,9 @@
         });
 
         // 呼吸灯动画控制
-        const centerButtonAnimation = document.getElementById(
-          "centerButtonAnimation"
-        );
-        const animationSpeedSlider = document.getElementById(
-          "centerButtonAnimationSpeed"
-        );
-        const animationScaleSlider = document.getElementById(
-          "centerButtonAnimationScale"
-        );
+        const centerButtonAnimation = document.getElementById("centerButtonAnimation");
+        const animationSpeedSlider = document.getElementById("centerButtonAnimationSpeed");
+        const animationScaleSlider = document.getElementById("centerButtonAnimationScale");
 
         centerButtonAnimation.addEventListener("change", (e) => {
           if (wheelConfig.centerButton) {
@@ -644,15 +546,9 @@
         });
 
         // 按钮边框控制
-        const borderWidthSlider = document.getElementById(
-          "centerButtonBorderWidth"
-        );
-        const borderColorPicker = document.getElementById(
-          "centerButtonBorderColor"
-        );
-        const borderStyleSelect = document.getElementById(
-          "centerButtonBorderStyle"
-        );
+        const borderWidthSlider = document.getElementById("centerButtonBorderWidth");
+        const borderColorPicker = document.getElementById("centerButtonBorderColor");
+        const borderStyleSelect = document.getElementById("centerButtonBorderStyle");
 
         borderWidthSlider.addEventListener("input", (e) => {
           if (wheelConfig.centerButton && wheelConfig.centerButton.border) {
@@ -676,15 +572,9 @@
         });
 
         // 按钮箭头控制
-        const arrowSizeSlider = document.getElementById(
-          "centerButtonArrowSize"
-        );
-        const arrowColorPicker = document.getElementById(
-          "centerButtonArrowColor"
-        );
-        const arrowOffsetYSlider = document.getElementById(
-          "centerButtonArrowOffsetY"
-        );
+        const arrowSizeSlider = document.getElementById("centerButtonArrowSize");
+        const arrowColorPicker = document.getElementById("centerButtonArrowColor");
+        const arrowOffsetYSlider = document.getElementById("centerButtonArrowOffsetY");
         const offsetYValue = document.getElementById("offsetYValue");
 
         arrowSizeSlider.addEventListener("input", (e) => {
@@ -789,12 +679,10 @@
             // const sectors = wheelConfig.sectors;
             // targetId = sectors[Math.floor(Math.random() * sectors.length)].id;
 
-            wheel.stop('1', (result) => {
+            wheel.stop("1", (result) => {
               alert(`恭喜您抽中: ${result.text}!`);
               // 停止完成回调，显示结果
-              document.getElementById(
-                "result"
-              ).textContent = `🎉 恭喜您抽中: ${result.text}!`;
+              document.getElementById("result").textContent = `🎉 恭喜您抽中: ${result.text}!`;
             });
           }
         }, 3000); // 3秒后停止
@@ -811,9 +699,7 @@
         wheel.stop("aaa", (result) => {
           alert(`恭喜您抽中: ${result.text}!`);
           // 停止完成回调，显示结果
-          document.getElementById(
-            "result"
-          ).textContent = `🎉 恭喜您抽中: ${result.text}!`;
+          document.getElementById("result").textContent = `🎉 恭喜您抽中: ${result.text}!`;
         });
       };
 
