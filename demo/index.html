@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>幸运转盘</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+      .canvas-box {
+        width: 600px;
+        height: 600px;
+        display: flex;
+        justify-content: center;
+      }
+      canvas {
+        margin: 20px 0;
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+      }
+      .start-btn {
+        background: #4caf50;
+        color: white;
+      }
+      .stop-btn {
+        background: #f44336;
+        color: white;
+      }
+      .result {
+        margin: 20px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .arrow-controls {
+        margin: 20px 0;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+      .arrow-controls label {
+        font-size: 14px;
+      }
+      .arrow-controls input,
+      .arrow-controls select {
+        padding: 5px;
+        margin-left: 5px;
+      }
+      .border-controls {
+        margin: 10px 0;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        padding: 10px;
+        background: #f5f5f5;
+        border-radius: 8px;
+      }
+      .border-controls label {
+        font-size: 14px;
+      }
+      .border-controls input,
+      .border-controls select {
+        padding: 5px;
+        margin-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>幸运转盘 Demo</h1>
+    <div class="result" id="result"></div>
+    <div class="controls">
+      <button class="start-btn" onclick="startWheel()">开始转盘</button>
+      <button class="stop-btn" onclick="stopWheel()">停止转盘</button>
+    </div>
+    <div class="canvas-box">
+      <canvas id="wheel-canvas"></canvas>
+    </div>
+
+    <!-- 箭头配置控件 -->
+    <div class="arrow-controls">
+      <label
+        >箭头距离:
+        <input type="range" id="distance" min="0" max="1000" value="180"
+      /></label>
+      <label
+        >箭头大小: <input type="range" id="size" min="10" max="30" value="15"
+      /></label>
+      <label>箭头颜色: <input type="color" id="color" value="#333333" /></label>
+      <label
+        >方向: <input type="range" id="direction" min="0" max="359" value="0"
+      /></label>
+    </div>
+
+    <!-- 边框配置控件 -->
+    <div class="border-controls">
+      <label>
+        边框宽度:
+        <input type="range" id="borderWidth" min="0" max="20" value="5" />
+      </label>
+      <label>
+        边框颜色: <input type="color" id="borderColor" value="#ff0000" />
+      </label>
+      <label>
+        边框样式:
+        <select id="borderStyle">
+          <option value="solid">实线</option>
+          <option value="dashed">虚线</option>
+          <option value="dotted">点线</option>
+        </select>
+      </label>
+      <label>
+        轮盘内边距:
+        <input type="range" id="innerPadding" min="0" max="50" value="0" />
+        <span id="innerPaddingValue">0</span>
+      </label>
+      <label>
+        画布内边距:
+        <input type="range" id="canvasPadding" min="0" max="100" value="0" />
+        <span id="canvasPaddingValue">0</span>
+      </label>
+    </div>
+
+    <!-- 扇形描边配置控件 -->
+    <div class="border-controls">
+      <label>
+        扇形描边宽度:
+        <input type="range" id="sectorStrokeWidth" min="0" max="10" value="0" />
+      </label>
+      <label>
+        扇形描边颜色:
+        <input type="color" id="sectorStrokeColor" value="#ffffff" />
+      </label>
+    </div>
+
+    <!-- 图片配置控件 -->
+    <div class="border-controls">
+      <label
+        >背景图片URL:
+        <input
+          type="text"
+          id="bgImageUrl"
+          placeholder="输入图片URL"
+          style="width: 300px"
+      /></label>
+      <button onclick="setBackgroundImage()">设置背景</button>
+      <button onclick="clearBackgroundImage()">清除背景</button>
+      <br /><br />
+      <label
+        >扇形图片URL:
+        <input
+          type="text"
+          id="sectorImageUrl"
+          placeholder="输入图片URL"
+          style="width: 200px"
+          value=""
+      /></label>
+      <label
+        >扇形ID:
+        <input
+          type="text"
+          id="sectorImageId"
+          placeholder="如：1"
+          style="width: 50px"
+          value="1"
+      /></label>
+      <button onclick="setSectorImage()">设置扇形图片</button>
+      <button onclick="clearSectorImage()">清除扇形图片</button>
+    </div>
+
+    <!-- 中心按钮配置控件 -->
+    <div class="border-controls" style="flex-wrap: wrap; max-width: 1200px">
+      <h3 style="margin: 0 0 10px 0; width: 100%">中心按钮配置</h3>
+
+      <!-- 基础配置行 -->
+      <div style="width: 100%; margin-bottom: 10px">
+        <div>
+          显示中心按钮:
+          <input type="checkbox" id="showCenterButton" checked />
+        </div>
+        <div>
+          呼吸灯动画:
+          <input type="checkbox" id="centerButtonAnimation" checked />
+        </div>
+        <div>
+          动画速度:
+          <input
+            type="range"
+            id="centerButtonAnimationSpeed"
+            min="0.0001"
+            max="0.01"
+            step="0.0001"
+            value="0.001"
+          />
+        </div>
+        <div>
+          动画幅度:
+          <input
+            type="range"
+            id="centerButtonAnimationScale"
+            min="0.01"
+            max="0.3"
+            step="0.01"
+            value="0.1"
+          />
+        </div>
+        <div>
+          按钮宽度:
+          <input
+            type="range"
+            id="centerButtonWidth"
+            min="0"
+            max="100"
+            value="20"
+          />
+        </div>
+        <div>
+          按钮高度:
+          <input
+            type="range"
+            id="centerButtonHeight"
+            min="0"
+            max="100"
+            value="20"
+          />
+        </div>
+        <div>
+          按钮背景色:
+          <input type="color" id="centerButtonBgColor" value="#ffffff" />
+        </div>
+      </div>
+
+      <!-- 背景图片配置行 -->
+      <div style="width: 100%; margin-bottom: 10px">
+        <label>
+          按钮背景图片URL:
+          <input
+            type="text"
+            id="centerButtonBgImageUrl"
+            placeholder="输入图片URL"
+            style="width: 300px"
+          />
+        </label>
+        <button onclick="setCenterButtonBgImage()">设置背景图</button>
+        <button onclick="clearCenterButtonBgImage()">清除背景图</button>
+      </div>
+
+      <!-- 边框配置行 -->
+      <div style="width: 100%; margin-bottom: 10px">
+        <label>
+          按钮边框宽度:
+          <input
+            type="range"
+            id="centerButtonBorderWidth"
+            min="0"
+            max="10"
+            value="3"
+          />
+        </label>
+        <label>
+          按钮边框颜色:
+          <input type="color" id="centerButtonBorderColor" value="#333333" />
+        </label>
+        <label>
+          按钮边框样式:
+          <select id="centerButtonBorderStyle">
+            <option value="solid" selected>实线</option>
+            <option value="dashed">虚线</option>
+            <option value="dotted">点线</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- 箭头基础配置行 -->
+      <div style="width: 100%; margin-bottom: 10px">
+        <label>
+          按钮箭头大小:
+          <input
+            type="range"
+            id="centerButtonArrowSize"
+            min="5"
+            max="20"
+            value="12"
+          />
+        </label>
+        <label>
+          按钮箭头颜色:
+          <input type="color" id="centerButtonArrowColor" value="#333333" />
+        </label>
+        <label>
+          箭头垂直偏移:
+          <input
+            type="range"
+            id="centerButtonArrowOffsetY"
+            min="-20"
+            max="20"
+            value="0"
+          />
+          <span id="offsetYValue">0</span>
+        </label>
+      </div>
+
+      <!-- 箭头图片配置行 -->
+      <div style="width: 100%; margin-bottom: 10px">
+        <label>
+          按钮箭头图片URL:
+          <input
+            type="text"
+            id="centerButtonArrowImageUrl"
+            placeholder="输入图片URL"
+            style="width: 300px"
+          />
+        </label>
+        <button onclick="setCenterButtonArrowImage()">设置箭头图</button>
+        <button onclick="clearCenterButtonArrowImage()">清除箭头图</button>
+      </div>
+    </div>
+
+    <script type="module">
+      import { LuckyWheelEngine } from "../dist-core/LuckyWheelEngine.esm.js";
+
+      // 转盘配置
+      const wheelConfig = {
+        sectors: [
+          {
+            id: "1",
+            text: "aaaaaaaaaaaaasdasdasdasdasd",
+            color: "#FF6B6E",
+            image: {
+              url: "https://cdn.pixabay.com/photo/2017/08/30/17/26/please-2697951_640.jpg",
+            },
+            stroke: {
+              width: 5, // 描边宽度
+              color: "#000000", // 描边颜色
+            },
+          },
+          {
+            id: "2",
+            text: "二等奖",
+            color: "#4ECDC4",
+          },
+          {
+            id: "3",
+            text: "三等奖",
+            color: "#45B7D1",
+            image: {
+              url: "https://cdn.pixabay.com/photo/2017/08/30/17/26/please-2697951_640.jpg",
+            },
+          },
+          {
+            id: "8",
+            text: "鼓励奖",
+            color: "#6A0572",
+            image: {
+              url: "https://cdn.pixabay.com/photo/2017/08/30/17/26/please-2697951_640.jpg",
+            },
+          },
+          {
+            id: "17",
+            text: "谢谢参与",
+            color: "#FF9FF3",
+            image: {
+              url: "https://cdn.pixabay.com/photo/2017/08/30/17/26/please-2697951_640.jpg",
+            },
+          },
+          { id: "18", text: "幸运奖", color: "#FF6F61" },
+          { id: "19", text: "一等奖", color: "#FF6B6B" },
+          { id: "20", text: "二等奖", color: "#4ECDC4" },
+          {
+            id: "aaa",
+            text: "这是一段很长的测试文本啊哈",
+            color: "#000000",
+            textConfig: {
+              fontSize: 14,
+              color: "#E60000FF",
+              maxLines: 4,
+              lineHeight: 16,
+              textAlign: "center",
+              direction: "horizontal",
+              offsetX: 0,
+              offsetY: 0,
+            },
+            // 测试内容图片功能
+            contentImage: {
+              url: "https://img.freepik.com/free-photo/3d-view-adorable-pet-cat_23-2150499168.jpg?semt=ais_hybrid&w=740",
+              width: 30,
+              height: 30,
+              offsetX: 0, // 测试X方向偏移
+              offsetY: 0, // 测试Y方向偏移
+              opacity: 1,
+            },
+          },
+        ],
+        targetDirection: 0,
+        stopOffsetRange: 1,
+        innerPadding: 20, // 轮盘内边距
+        canvasPadding: 30, // 画布内边距
+        backgroundImage:
+          "https://images.pexels.com/photos/2174974/pexels-photo-2174974.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        arrow: {
+          size: 15,
+          color: "#333333",
+          image: "https://img95.699pic.com/element/40180/9917.png_300.png",
+          imageWidth: 30, // 箭头图片宽度
+          imageHeight: 30, // 箭头图片高度
+        },
+        border: {
+          width: 5,
+          color: "#ff0000",
+          style: "solid",
+        },
+        // 全局扇形描边配置
+        sectorStroke: {
+          width: 5, // 默认无描边
+          color: "#ffff",
+        },
+        // 中心按钮配置
+        centerButton: {
+          visible: true,
+          animation: true, // 默认开启呼吸灯动画
+          width: 80,
+          height: 80,
+          backgroundColor: "#ffffff",
+          backgroundImage:
+            "https://img.freepik.com/free-photo/3d-view-adorable-pet-cat_23-2150499168.jpg?semt=ais_hybrid&w=740",
+          border: {
+            width: 3,
+            color: "#333333",
+            style: "solid",
+          },
+
+          arrow: {
+            size: 20,
+            color: "#333333",
+            offsetY: -30,
+            image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg7YPW9MYXhIaiEYqmUOJNP85XFdAr9y6ccexXNFPRP2X1yMLd2fjWXUTR-uzgBbjN_Hs&usqp=CAU",
+            imageWidth: 30,
+            imageHeight: 30,
+          },
+        },
+      };
+
+      let wheel;
+      let targetId;
+
+      // 创建转盘并设置回调的辅助函数
+      function createWheelWithCallback() {
+        const canvas = document.getElementById("wheel-canvas");
+        wheel = new LuckyWheelEngine(canvas, wheelConfig);
+
+        // 设置中心按钮点击回调
+        wheel.setCenterButtonClickCallback(() => {
+          console.log("开始旋转");
+
+          setTimeout(() => {
+            // 1秒后自动停止转盘
+            if (wheel) {
+              wheel.stop("aaa", (result) => {
+                alert(` 恭喜您抽中: ${result.text}!`);
+                // 停止完成回调，显示结果
+                document.getElementById(
+                  "result"
+                ).textContent = `🎉 恭喜您抽中: ${result.text}!`;
+              });
+            }
+          }, 3000); // 3秒后停止
+        });
+
+        return wheel;
+      }
+
+      // 初始化转盘
+      function initWheel() {
+        createWheelWithCallback();
+
+        // 添加箭头配置监听器
+        setupArrowControls();
+        // 添加边框配置监听器
+        setupBorderControls();
+        // 添加扇形描边配置监听器
+        setupSectorStrokeControls();
+        // 添加中心按钮配置监听器
+        setupCenterButtonControls();
+      }
+
+      // 设置箭头控制器
+      function setupArrowControls() {
+        const distanceSlider = document.getElementById("distance");
+        const sizeSlider = document.getElementById("size");
+        const colorPicker = document.getElementById("color");
+        const directionSlider = document.getElementById("direction");
+
+        distanceSlider.addEventListener("input", (e) => {
+          wheel.setArrowDistance(parseInt(e.target.value));
+        });
+
+        sizeSlider.addEventListener("input", (e) => {
+          wheel.setArrowConfig({ size: parseInt(e.target.value) });
+        });
+
+        colorPicker.addEventListener("input", (e) => {
+          wheel.setArrowConfig({ color: e.target.value });
+        });
+
+        directionSlider.addEventListener("input", (e) => {
+          wheel.setTargetDirection(parseInt(e.target.value));
+        });
+      }
+
+      // 设置边框控制器
+      function setupBorderControls() {
+        const borderWidthSlider = document.getElementById("borderWidth");
+        const borderColorPicker = document.getElementById("borderColor");
+        const borderStyleSelect = document.getElementById("borderStyle");
+        const innerPaddingSlider = document.getElementById("innerPadding");
+        const innerPaddingValue = document.getElementById("innerPaddingValue");
+        const canvasPaddingSlider = document.getElementById("canvasPadding");
+        const canvasPaddingValue =
+          document.getElementById("canvasPaddingValue");
+
+        borderWidthSlider.addEventListener("input", (e) => {
+          wheel.setBorderWidth(parseInt(e.target.value));
+        });
+
+        borderColorPicker.addEventListener("input", (e) => {
+          wheel.setBorderColor(e.target.value);
+        });
+
+        borderStyleSelect.addEventListener("change", (e) => {
+          wheel.setBorderStyle(e.target.value);
+        });
+
+        innerPaddingSlider.addEventListener("input", (e) => {
+          const paddingValue = parseInt(e.target.value);
+          innerPaddingValue.textContent = paddingValue;
+          wheel.setInnerPadding(paddingValue);
+        });
+
+        canvasPaddingSlider.addEventListener("input", (e) => {
+          const paddingValue = parseInt(e.target.value);
+          canvasPaddingValue.textContent = paddingValue;
+          wheelConfig.canvasPadding = paddingValue;
+          // 重新创建轮盘以应用画布内边距
+          createWheelWithCallback();
+        });
+      }
+
+      // 设置扇形描边控制器
+      function setupSectorStrokeControls() {
+        const sectorStrokeWidthSlider =
+          document.getElementById("sectorStrokeWidth");
+        const sectorStrokeColorPicker =
+          document.getElementById("sectorStrokeColor");
+
+        sectorStrokeWidthSlider.addEventListener("input", (e) => {
+          wheel.setSectorStrokeWidth(parseInt(e.target.value));
+        });
+
+        sectorStrokeColorPicker.addEventListener("input", (e) => {
+          wheel.setSectorStrokeColor(e.target.value);
+        });
+      }
+
+      // 设置中心按钮控制器
+      function setupCenterButtonControls() {
+        // 显示/隐藏中心按钮
+        const showCenterButton = document.getElementById("showCenterButton");
+
+        showCenterButton.addEventListener("change", (e) => {
+          if (wheelConfig.centerButton) {
+            wheelConfig.centerButton.visible = e.target.checked;
+            createWheelWithCallback();
+          }
+        });
+
+        // 呼吸灯动画控制
+        const centerButtonAnimation = document.getElementById(
+          "centerButtonAnimation"
+        );
+        const animationSpeedSlider = document.getElementById(
+          "centerButtonAnimationSpeed"
+        );
+        const animationScaleSlider = document.getElementById(
+          "centerButtonAnimationScale"
+        );
+
+        centerButtonAnimation.addEventListener("change", (e) => {
+          if (wheelConfig.centerButton) {
+            wheelConfig.centerButton.animation = e.target.checked;
+            createWheelWithCallback();
+          }
+        });
+
+        animationSpeedSlider.addEventListener("input", (e) => {
+          if (wheel) {
+            wheel.setCenterButtonAnimationSpeed(parseFloat(e.target.value));
+          }
+        });
+
+        animationScaleSlider.addEventListener("input", (e) => {
+          if (wheel) {
+            wheel.setCenterButtonAnimationScale(parseFloat(e.target.value));
+          }
+        });
+
+        // 按钮尺寸控制
+        const widthSlider = document.getElementById("centerButtonWidth");
+        const heightSlider = document.getElementById("centerButtonHeight");
+
+        widthSlider.addEventListener("input", (e) => {
+          if (wheelConfig.centerButton) {
+            wheelConfig.centerButton.width = parseInt(e.target.value);
+            createWheelWithCallback();
+          }
+        });
+
+        heightSlider.addEventListener("input", (e) => {
+          if (wheelConfig.centerButton) {
+            wheelConfig.centerButton.height = parseInt(e.target.value);
+            createWheelWithCallback();
+          }
+        });
+
+        // 按钮背景色控制
+        const bgColorPicker = document.getElementById("centerButtonBgColor");
+        bgColorPicker.addEventListener("input", (e) => {
+          if (wheelConfig.centerButton) {
+            wheelConfig.centerButton.backgroundColor = e.target.value;
+            createWheelWithCallback();
+          }
+        });
+
+        // 按钮边框控制
+        const borderWidthSlider = document.getElementById(
+          "centerButtonBorderWidth"
+        );
+        const borderColorPicker = document.getElementById(
+          "centerButtonBorderColor"
+        );
+        const borderStyleSelect = document.getElementById(
+          "centerButtonBorderStyle"
+        );
+
+        borderWidthSlider.addEventListener("input", (e) => {
+          if (wheelConfig.centerButton && wheelConfig.centerButton.border) {
+            wheelConfig.centerButton.border.width = parseInt(e.target.value);
+            createWheelWithCallback();
+          }
+        });
+
+        borderColorPicker.addEventListener("input", (e) => {
+          if (wheelConfig.centerButton && wheelConfig.centerButton.border) {
+            wheelConfig.centerButton.border.color = e.target.value;
+            createWheelWithCallback();
+          }
+        });
+
+        borderStyleSelect.addEventListener("change", (e) => {
+          if (wheelConfig.centerButton && wheelConfig.centerButton.border) {
+            wheelConfig.centerButton.border.style = e.target.value;
+            createWheelWithCallback();
+          }
+        });
+
+        // 按钮箭头控制
+        const arrowSizeSlider = document.getElementById(
+          "centerButtonArrowSize"
+        );
+        const arrowColorPicker = document.getElementById(
+          "centerButtonArrowColor"
+        );
+        const arrowOffsetYSlider = document.getElementById(
+          "centerButtonArrowOffsetY"
+        );
+        const offsetYValue = document.getElementById("offsetYValue");
+
+        arrowSizeSlider.addEventListener("input", (e) => {
+          if (wheelConfig.centerButton && wheelConfig.centerButton.arrow) {
+            wheelConfig.centerButton.arrow.size = parseInt(e.target.value);
+            createWheelWithCallback();
+          }
+        });
+
+        arrowColorPicker.addEventListener("input", (e) => {
+          if (wheelConfig.centerButton && wheelConfig.centerButton.arrow) {
+            wheelConfig.centerButton.arrow.color = e.target.value;
+            createWheelWithCallback();
+          }
+        });
+
+        arrowOffsetYSlider.addEventListener("input", (e) => {
+          const offsetValue = parseInt(e.target.value);
+          offsetYValue.textContent = offsetValue;
+          if (wheelConfig.centerButton && wheelConfig.centerButton.arrow) {
+            wheelConfig.centerButton.arrow.offsetY = offsetValue;
+            createWheelWithCallback();
+          }
+        });
+      }
+
+      // 设置背景图片
+      window.setBackgroundImage = function () {
+        const url = document.getElementById("bgImageUrl").value;
+        if (url) {
+          wheel.setBackgroundImage(url);
+        }
+      };
+
+      // 清除背景图片
+      window.clearBackgroundImage = function () {
+        wheel.setBackgroundImage(undefined);
+      };
+
+      // 设置扇形图片
+      window.setSectorImage = function () {
+        const url = document.getElementById("sectorImageUrl").value;
+        const id = document.getElementById("sectorImageId").value;
+        if (typeof wheel.setSectorImage === "function") {
+          wheel.setSectorImage(id, url);
+        }
+      };
+
+      // 清除扇形图片
+      window.clearSectorImage = function () {
+        const id = document.getElementById("sectorImageId").value;
+        if (id) {
+          wheel.setSectorImage(id, undefined);
+        }
+      };
+
+      // 设置中心按钮背景图片
+      window.setCenterButtonBgImage = function () {
+        const url = document.getElementById("centerButtonBgImageUrl").value;
+        if (url && wheelConfig.centerButton) {
+          wheelConfig.centerButton.backgroundImage = url;
+          createWheelWithCallback();
+        }
+      };
+
+      // 清除中心按钮背景图片
+      window.clearCenterButtonBgImage = function () {
+        if (wheelConfig.centerButton) {
+          wheelConfig.centerButton.backgroundImage = undefined;
+          createWheelWithCallback();
+        }
+      };
+
+      // 设置中心按钮箭头图片
+      window.setCenterButtonArrowImage = function () {
+        const url = document.getElementById("centerButtonArrowImageUrl").value;
+        if (url && wheelConfig.centerButton && wheelConfig.centerButton.arrow) {
+          wheelConfig.centerButton.arrow.image = url;
+          createWheelWithCallback();
+        }
+      };
+
+      // 清除中心按钮箭头图片
+      window.clearCenterButtonArrowImage = function () {
+        if (wheelConfig.centerButton && wheelConfig.centerButton.arrow) {
+          wheelConfig.centerButton.arrow.image = undefined;
+          createWheelWithCallback();
+        }
+      };
+
+      // 开始转盘
+      window.startWheel = function () {
+        if (!wheel) return;
+
+        document.getElementById("result").textContent = "";
+        wheel.start(); // 不传入id，让转盘无限旋转
+
+        setTimeout(() => {
+          // 3秒后自动停止转盘
+          if (wheel) {
+            // 随机选择一个奖项作为目标
+            // const sectors = wheelConfig.sectors;
+            // targetId = sectors[Math.floor(Math.random() * sectors.length)].id;
+
+            wheel.stop('1', (result) => {
+              alert(`恭喜您抽中: ${result.text}!`);
+              // 停止完成回调，显示结果
+              document.getElementById(
+                "result"
+              ).textContent = `🎉 恭喜您抽中: ${result.text}!`;
+            });
+          }
+        }, 3000); // 3秒后停止
+      };
+
+      // 停止转盘
+      window.stopWheel = function () {
+        if (!wheel) return;
+
+        // 随机选择一个奖项作为目标
+        // const sectors = wheelConfig.sectors;
+        // targetId = sectors[Math.floor(Math.random() * sectors.length)].id;
+
+        wheel.stop("aaa", (result) => {
+          alert(`恭喜您抽中: ${result.text}!`);
+          // 停止完成回调，显示结果
+          document.getElementById(
+            "result"
+          ).textContent = `🎉 恭喜您抽中: ${result.text}!`;
+        });
+      };
+
+      // 页面加载完成后初始化
+      document.addEventListener("DOMContentLoaded", initWheel);
+    </script>
+  </body>
+</html>
