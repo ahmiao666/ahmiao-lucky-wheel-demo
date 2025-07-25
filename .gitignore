@@ -12,7 +12,6 @@ pnpm-debug.log*
 dist/
 dist-react/
 dist-vue/
-dist-core/
 build/
 out/
 
