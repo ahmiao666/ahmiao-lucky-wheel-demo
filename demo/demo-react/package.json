@@ -10,8 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ahmiao666/lucky-wheel-react": "^1.0.0",
-    "@ahmiao666/lucky-wheel-vue": "^1.0.1",
+    "@ahmiao666/lucky-wheel-react": "^1.0.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

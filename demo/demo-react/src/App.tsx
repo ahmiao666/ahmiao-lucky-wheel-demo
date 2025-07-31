@@ -1,10 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
-import {
-  ReactLuckyWheel,
-  type WheelConfig,
-  type SectorConfig,
-  type ReactLuckyWheelRef,
-} from "@ahmiao666/lucky-wheel-react";
+import { ReactLuckyWheel, type WheelConfig, type SectorConfig, type ReactLuckyWheelRef } from "@ahmiao666/lucky-wheel-react";
 import "./App.css";
 
 function App() {
@@ -105,11 +100,9 @@ function App() {
   }, []);
 
   const handleCenterButtonClick = () => {
-    // 先开始旋转
     handleManualStart();
-    // 3秒后停止
     setTimeout(() => {
-      handleManualStop()
+      handleManualStop("1");
     }, 3000);
   };
   // 手动开始转盘
@@ -118,15 +111,16 @@ function App() {
   };
 
   // 手动停止转盘
-  const handleManualStop = () => {
-    wheelRef.current.stop("2");
+  const handleManualStop = (sectorId: string) => {
+    console.log(sectorId, "sectorId");
+    wheelRef.current.stop(sectorId);
   };
 
   // 自动演示（3秒后自动停止）
   const handleAutoDemo = () => {
     handleManualStart();
     setTimeout(() => {
-      handleManualStop();
+      handleManualStop("3");
     }, 3000);
   };
 
@@ -144,7 +138,7 @@ function App() {
         <button className="btn btn-start" onClick={handleManualStart}>
           开始转盘
         </button>
-        <button className="btn btn-stop" onClick={handleManualStop}>
+        <button className="btn btn-stop" onClick={() => handleManualStop("2")}>
           停止转盘
         </button>
         <button className="btn btn-auto" onClick={handleAutoDemo}>
@@ -155,13 +149,7 @@ function App() {
       {/* 转盘画布 */}
       <div className="canvas-container">
         <div className="canvas-box">
-          <ReactLuckyWheel
-            ref={wheelRef}
-            config={wheelConfig}
-            onStart={handleStart}
-            onStop={handleStop}
-            onCenterButtonClick={handleCenterButtonClick}
-          />
+          <ReactLuckyWheel ref={wheelRef} config={wheelConfig} onStart={handleStart} onStop={handleStop} onCenterButtonClick={handleCenterButtonClick} />
         </div>
       </div>
 
