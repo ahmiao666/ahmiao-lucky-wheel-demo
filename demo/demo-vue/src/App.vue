@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import { VueLuckyWheel } from "@ahmiao666/lucky-wheel-vue";
-import type { WheelConfig, VueLuckyWheelRef } from "@ahmiao666/lucky-wheel-vue";
+import type { WheelConfig, VueLuckyWheelRef, SectorConfig } from "@ahmiao666/lucky-wheel-vue";
 
 // 响应式状态
 const spinning = ref(false);
@@ -63,7 +63,7 @@ const wheelConfig: WheelConfig = reactive({
   arrow: {
     size: 20,
     color: "#333333",
-    distance:230,
+    distance: 230,
   },
   border: {
     width: 5,
@@ -100,7 +100,7 @@ const handleStop = (sector: SectorConfig) => {
 };
 
 const handleCenterButtonClick = () => {
-  wheelRef.value.start();
+  wheelRef.value?.start();
 
   setTimeout(() => {
     handleManualStop();
@@ -109,12 +109,12 @@ const handleCenterButtonClick = () => {
 
 // 手动开始转盘
 const handleManualStart = () => {
-  wheelRef.value.start();
+  wheelRef.value?.start();
 };
 
 // 手动停止转盘
 const handleManualStop = () => {
-  wheelRef.value.stop("2");
+  wheelRef.value?.stop("2");
 };
 
 // 自动演示（3秒后自动停止）
@@ -145,13 +145,7 @@ const handleAutoDemo = () => {
     <!-- 转盘画布 -->
     <div class="canvas-container">
       <div class="canvas-box">
-        <VueLuckyWheel
-          ref="wheelRef"
-          :config="wheelConfig"
-          @start="handleStart"
-          @stop="handleStop"
-          @center-button-click="handleCenterButtonClick"
-        />
+        <VueLuckyWheel ref="wheelRef" :config="wheelConfig" @start="handleStart" @stop="handleStop" @center-button-click="handleCenterButtonClick" />
       </div>
     </div>
 
